@@ -1,0 +1,21 @@
+# One image for any ESP32-S3 board: 4 MB flash, no PSRAM required.
+CONFIG_IDF_TARGET="esp32s3"
+CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
+CONFIG_PARTITION_TABLE_CUSTOM=y
+
+CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ_240=y
+CONFIG_FREERTOS_HZ=1000
+CONFIG_COMPILER_OPTIMIZATION_PERF=y
+
+# No console: UART0 carries the protocol and the USB port is the keyboard, mouse and audio.
+# Logs go to the hub as Log messages instead.
+CONFIG_ESP_CONSOLE_NONE=y
+CONFIG_ESP_CONSOLE_SECONDARY_NONE=y
+CONFIG_BOOTLOADER_LOG_LEVEL_NONE=y
+
+# Two HID interfaces: 0 the keyboard, 1 the mouse and media keys.
+CONFIG_TINYUSB_HID_COUNT=2
+
+# Wi-Fi: the board's own network gives out no DNS, and the driver stores no settings of its own.
+CONFIG_LWIP_DHCPS_ADD_DNS=n
+CONFIG_ESP_WIFI_NVS_ENABLED=n

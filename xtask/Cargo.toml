@@ -1,0 +1,15 @@
+[package]
+name = "xtask"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish = false
+
+[dependencies]
+kvmate-protocol.workspace = true
+cbindgen = { version = "0.29", default-features = false }
+png = "0.18"
+sha2 = "0.10.9"
+
+[lints]
+workspace = true

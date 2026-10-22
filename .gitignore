@@ -1,0 +1,14 @@
+# Rust
+/target/
+
+# Tauri
+/crates/hub/gen/
+
+# ESP-IDF
+/firmware/build/
+/firmware/managed_components/
+/firmware/sdkconfig
+/firmware/sdkconfig.old
+
+# Release files (cargo xtask dist)
+/dist/

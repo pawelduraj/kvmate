@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>kvmate</title>
+  <link rel="stylesheet" href="shared/base.css">
+  <link rel="stylesheet" href="main/style.css">
+  <script type="module" src="main/app.js" blocking="render"></script>
+</head>
+<body>
+  <header class="top">
+    <div id="banner" class="banner" hidden>
+      <div><b id="banner-title"></b><span id="banner-text"></span></div>
+      <button id="banner-action" class="btn" hidden></button>
+    </div>
+    <div id="map" class="map" aria-label="What goes where — click an element to go to its settings"></div>
+    <p id="settings-error" class="note error-text" hidden></p>
+  </header>
+  <main id="main">
+    <div id="sections" class="view"></div>
+  </main>
+
+  <div id="parking" hidden>
+    <div id="conn-panel" class="board-panel">
+      <h3 class="sub">Wireless connection</h3>
+      <div class="rows">
+        <div class="row"><span>Board Wi-Fi<small id="wifi-mode-note"></small></span>
+          <div class="seg" role="radiogroup" aria-label="Board Wi-Fi">
+            <button data-wifi-mode="off" role="radio">Off</button>
+            <button data-wifi-mode="board_network" role="radio">Own network</button>
+            <button data-wifi-mode="router" role="radio">Via router</button>
+          </div>
+        </div>
+      </div>
+      <div id="wifi-router" hidden>
+        <div id="wifi-saved" class="saved" hidden>
+          <p class="note">Networks saved in Windows — the board gets the name and password straight from here:</p>
+          <ul id="wifi-saved-list"></ul>
+        </div>
+        <div class="rows">
+          <div class="row"><span><span id="wifi-manual-title">Network</span><small id="wifi-scan-note">click “Scan” and the board shows the networks it sees</small></span>
+            <span class="actions"><input id="wifi-ssid" class="field" list="wifi-networks" autocomplete="off" spellcheck="false" aria-label="Network name"><datalist id="wifi-networks"></datalist><button id="wifi-scan" class="btn">Scan</button></span>
+          </div>
+          <div class="row"><span>Network password<small>goes only to the board; the app does not store it</small></span><input id="wifi-pass" class="field" type="password" autocomplete="off" aria-label="Network password"></div>
+        </div>
+      </div>
+      <div id="wifi-name-rows" class="rows" hidden>
+        <div class="row"><span><span id="wifi-name-title">Board name</span><small id="wifi-name-note"></small></span><input id="wifi-name" class="field" autocomplete="off" spellcheck="false" aria-label="Board name on Wi-Fi"></div>
+      </div>
+      <div id="wifi-own" class="rows" hidden>
+        <div class="row"><span>Password<small>the app connects by itself, no need to type it</small></span><span class="actions"><code id="wifi-own-pass" class="mono">••••••••••••••••</code><button id="wifi-show" class="btn">Show</button></span></div>
+      </div>
+      <div id="wifi-state" class="rows">
+        <div class="row"><span>Now<small id="wifi-adapter"></small></span><span id="wifi-board" class="wifi-board">—</span></div>
+      </div>
+      <div class="actions wifi-actions">
+        <button id="wifi-save" class="btn primary">Save to board</button>
+        <button id="wifi-forget" class="btn danger">Forget Wi-Fi</button>
+        <span id="wifi-hint" class="note"></span>
+      </div>
+      <p id="wifi-error" class="note error-text" hidden></p>
+    </div>
+
+    <div id="fw-panel" class="board-panel">
+      <h3 class="sub">Firmware and LED</h3>
+      <div id="silent" class="silent" hidden>
+        <p class="note">These ports have a USB-UART bridge but don't answer like a kvmate board — maybe they have no firmware yet. Install only on the “COM” port of an ESP32-S3 board.</p>
+        <ul id="silent-list"></ul>
+      </div>
+      <div class="rows">
+        <div id="fw-row" class="row" hidden><span>Firmware<small id="fw-state"></small></span>
+          <span class="actions"><button id="fw-install" class="btn">Update firmware</button><button id="fw-erase" class="btn danger">Remove kvmate firmware…</button></span>
+        </div>
+        <div id="fw-progress" class="row progress" hidden><span id="fw-stage"></span><progress id="fw-bar" max="1"></progress></div>
+        <div id="fw-result-row" class="row" hidden><span id="fw-result"></span></div>
+        <label class="row check"><span>LED<small>blue: you control this computer, green: the other one; blinks when the board has no connection to the app</small></span><input id="led-on" class="tgl" type="checkbox" role="switch"></label>
+        <div id="led-row" class="row" hidden><span>LED brightness<small id="led-text"></small></span><div id="led-levels" class="levels" role="radiogroup" aria-label="LED brightness"></div></div>
+      </div>
+
+      <details class="more">
+        <summary>Technical details</summary>
+        <dl class="kv">
+          <dt>Port</dt><dd id="port">—</dd>
+          <dt>USB-UART bridge</dt><dd id="bridge">—</dd>
+          <dt>Other computer (USB)</dt><dd id="usb">—</dd>
+          <dt>Firmware on the board</dt><dd id="firmware">—</dd>
+          <dt>Firmware in the app</dt><dd id="fw-bundled">—</dd>
+          <dt>Protocol self-test</dt><dd id="selftest">—</dd>
+          <dt>MAC</dt><dd id="mac">—</dd>
+        </dl>
+        <p class="note">Every Wi-Fi connection is encrypted with a key the app gives the board only over the cable. The Wi-Fi settings are stored unencrypted in the board's memory — whoever holds the board can read the router password. “Forget Wi-Fi” or “Remove kvmate firmware” erases them.</p>
+      </details>
+
+      <details id="log-box" class="more">
+        <summary>Log</summary>
+        <div class="log-tools">
+          <div class="seg" role="group" aria-label="Show">
+            <button data-filter="all">All</button>
+            <button data-filter="problems">Problems only</button>
+          </div>
+          <span class="grow"></span>
+          <button id="log-copy" class="btn">Copy</button>
+        </div>
+        <ol id="logs" class="logs"></ol>
+        <p id="log-path" class="note"></p>
+      </details>
+    </div>
+  </div>
+
+  <div id="confirm" class="modal" hidden>
+    <div class="card" role="dialog" aria-modal="true" aria-labelledby="confirm-text">
+      <p id="confirm-text"></p>
+      <div class="actions"><button id="confirm-yes" class="btn danger"></button><button id="confirm-no" class="btn">Cancel</button></div>
+    </div>
+  </div>
+</body>
+</html>

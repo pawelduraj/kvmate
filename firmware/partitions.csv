@@ -1,0 +1,4 @@
+# Settings (nvs) go last, so a firmware update doesn't erase them.
+# Name,   Type, SubType, Offset,   Size
+factory,  app,  factory, 0x10000,  0x3E0000
+nvs,      data, nvs,     0x3F0000, 0x10000

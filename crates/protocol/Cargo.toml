@@ -1,0 +1,15 @@
+[package]
+name = "kvmate-protocol"
+description = "Wire protocol shared by the kvmate hub and the ESP32-S3 firmware"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+aes-gcm = { version = "0.10.3", default-features = false, features = ["aes"] }
+bytemuck = { version = "1.25.2", default-features = false, features = ["derive"] }
+hmac = "0.12.1"
+sha2 = { version = "0.10.9", default-features = false }
+
+[lints]
+workspace = true

@@ -1,0 +1,19 @@
+[workspace]
+resolver = "3"
+members = ["crates/protocol", "crates/core", "crates/hub", "xtask"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+
+[workspace.dependencies]
+kvmate-protocol = { path = "crates/protocol" }
+kvmate-core = { path = "crates/core" }
+
+[profile.dev.package.rubato]
+opt-level = 3
+
+[workspace.lints.clippy]
+implicit_return = "warn"
+needless_return = "allow"

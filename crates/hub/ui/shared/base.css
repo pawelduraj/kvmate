@@ -1,0 +1,146 @@
+/* The theme is always set on <html> (applyTheme in dom.js), so the stylesheets handle only light
+   and dark. */
+:root {
+  color-scheme: light;
+  --here: #1e6bd0;
+  --other: #1e7f50;
+  --here-line: #2f7de1;
+  --other-line: #2fa36b;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --here: #2c6fd6;
+  --other: #1f8a5b;
+  --here-line: #4d9bff;
+  --other-line: #3ccb8a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/20px "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+button,
+select,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+.ico {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+.grow {
+  flex: 1;
+}
+
+.tgl {
+  --tgl-w: 40px;
+  appearance: none;
+  width: var(--tgl-w);
+  height: 22px;
+  margin: 0;
+  flex-shrink: 0;
+  border-radius: 11px;
+  background: var(--idle);
+  position: relative;
+  cursor: pointer;
+}
+
+.tgl::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  transition: left 0.15s;
+}
+
+.tgl:checked {
+  background: var(--here);
+}
+
+.tgl:checked::before {
+  left: calc(var(--tgl-w) - 19px);
+}
+
+.levels {
+  display: flex;
+  align-items: flex-end;
+}
+
+.levels button {
+  padding: 0 2px;
+  display: flex;
+  align-items: flex-end;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+}
+
+.levels i {
+  display: block;
+  width: 100%;
+  border-radius: 2px;
+  background: var(--idle);
+}
+
+.levels button.on i {
+  background: var(--here-line);
+}
+
+.lane {
+  position: relative;
+  overflow: hidden;
+}
+
+.lane::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(-1 * var(--stripe));
+  right: calc(-1 * var(--stripe));
+  background: var(--flow, none);
+}
+
+@keyframes flow-left {
+  to { transform: translateX(calc(-1 * var(--stripe))); }
+}
+
+@keyframes flow-right {
+  to { transform: translateX(var(--stripe)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lane::before { animation: none !important; }
+}
